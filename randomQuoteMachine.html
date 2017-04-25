@@ -1,7 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 	<title>Random Design Quote Machine</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		div {
+		  border: solid
+		}
+		#wrapper {
+			width:550px;
+			min-height: 200px;
+			position:absolute;
+			left:40%;
+			top:60%;
+			margin:-100px 0 0 -150px;
+		}
+
+		#twit {
+		  position:relative;
+		  margin:100px 0 0 150px;
+		}
+
+		button {
+		  position:relative;
+		  margin:100px 0 0 150px;
+		}
+
+
+		fa-twitter-square:before {
+		    content: ' ';
+		    clear: right;
+		    display: block;
+		}
+	</style>
 	<script>
 		var result = document.getElementById("result");
 		var btn = document.getElementById("btn");
@@ -29,7 +61,13 @@
 	</script>
 </head>
 <body>
-	<div id="result"></div>
-	<button id="btn">New Quote</button>
+	<div id="wrapper">
+	<div id="resultContent"></div>
+	<div id="resultAuthor"></div>
+	<span style="display: inline;">
+	 	<a id="twit"><i class="fa fa-twitter-square" style="font-size:24px"></i></a>
+  		<button id="btn">New Quote</button>
+ 	</span>
+</div>
 </body>
 </html>
