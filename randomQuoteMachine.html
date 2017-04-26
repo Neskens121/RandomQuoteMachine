@@ -8,6 +8,14 @@
 		div {
 		  border: solid
 		}
+		a {
+		    text-decoration: none;
+		}
+
+		a:link, a:visited {
+		    color: blue;
+		}
+
 		#wrapper {
 			width:550px;
 			min-height: 200px;
@@ -27,7 +35,6 @@
 		  margin:100px 0 0 150px;
 		}
 
-
 		fa-twitter-square:before {
 		    content: ' ';
 		    clear: right;
@@ -35,39 +42,52 @@
 		}
 	</style>
 	<script>
-		var result = document.getElementById("result");
+		var resultContent = document.getElementById("resultContent");
+    	var resultAuthor = document.getElementById("resultAuthor");
 		var btn = document.getElementById("btn");
+	    var twitt = document.getElementById("twitt");
     	
- 	    window.addEventListener('load', generateQuote);
+    	window.addEventListener('load', generateQuote);
 		btn.addEventListener('click', generateQuote);
 
-
+		
 		function generateQuote(){
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function () {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					var jsonObject = JSON.parse(xmlhttp.response);
-					console.log(jsonObject);
-					for (var prop in jsonObject[0]) {
-					   console.log(prop);
-					}
-					result.innerHTML = jsonObject[0].content;
+          resultAuthor.innerHTML = jsonObject[0].title;
+          var content = jsonObject[0].content.replace(/<\/?p>/gi, '')
+					resultContent.innerHTML = content;
+          
+          console.log(twitt.href);
+          console.log(content);
+          content = encode(resultContent.innerHTML + '#quotesondesign');
+          console.log(content)
+          twitt.href = twitt.href.replace(/text=.*/gi, 'text=' + content)
+          console.log(twitt.href);
 				}
 			}
 			xmlhttp.open("GET", "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", true);
 			xmlhttp.send();
 		}
 
+
+		function encode(string) {
+		  return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
+		}
 	</script>
 </head>
 <body>
 	<div id="wrapper">
-	<div id="resultContent"></div>
-	<div id="resultAuthor"></div>
-	<span style="display: inline;">
-	 	<a id="twit"><i class="fa fa-twitter-square" style="font-size:24px"></i></a>
-  		<button id="btn">New Quote</button>
- 	</span>
-</div>
+		<div id="resultContent"></div>
+		<div id="resultAuthor"></div>
+		<span style="display: inline;">
+	 		<a><i class="fa fa-twitter-square" style="font-size:24px"></i></a>
+	  		<button id="btn">New Quote</button>
+		</span>
+		<a id="twitt" target="_blank" class="twitter-share-button fa fa-twitter-square" style="font-size:24px" href="https://twitter.com/intent/tweet?text=Hello%20world"></a>
+	</div>
+	</div>
 </body>
 </html>
