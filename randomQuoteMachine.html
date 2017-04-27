@@ -6,14 +6,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style>
 		div {
-		  border: solid
+			border: solid;
+			position: relative;
 		}
 		a {
-		    text-decoration: none;
+			text-decoration: none;
 		}
 
 		a:link, a:visited {
-		    color: blue;
+			color: blue;
 		}
 
 		#wrapper {
@@ -24,30 +25,35 @@
 			top:60%;
 			margin:-100px 0 0 -150px;
 		}
+		
+		#resultContent{ 
+			text-align: center;
+		}  
 
+		#quoteButtons, #resultAuthor{ 
+			padding-top: 20px;
+		}  
+		#resultAuthor{ 
+			text-align: right;
+		}  
 		#twit {
-		  position:relative;
-		  margin:100px 0 0 150px;
+			position:relative;
+			float: left;
 		}
 
 		button {
-		  position:relative;
-		  margin:100px 0 0 150px;
+			position:relative;
+			float: right;
 		}
 
-		fa-twitter-square:before {
-		    content: ' ';
-		    clear: right;
-		    display: block;
-		}
 	</style>
 	<script>
 		var resultContent = document.getElementById("resultContent");
-    	var resultAuthor = document.getElementById("resultAuthor");
+		var resultAuthor = document.getElementById("resultAuthor");
 		var btn = document.getElementById("btn");
-	    var twitt = document.getElementById("twitt");
-    	
-    	window.addEventListener('load', generateQuote);
+		var twitt = document.getElementById("twitt");
+
+		window.addEventListener('load', generateQuote);
 		btn.addEventListener('click', generateQuote);
 
 		
@@ -56,16 +62,16 @@
 			xmlhttp.onreadystatechange = function () {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					var jsonObject = JSON.parse(xmlhttp.response);
-          resultAuthor.innerHTML = jsonObject[0].title;
-          var content = jsonObject[0].content.replace(/<\/?p>/gi, '')
+					resultAuthor.innerHTML = jsonObject[0].title;
+					var content = jsonObject[0].content.replace(/<\/?p>/gi, '')
 					resultContent.innerHTML = content;
-          
-          console.log(twitt.href);
-          console.log(content);
-          content = encode(resultContent.innerHTML + '#quotesondesign');
-          console.log(content)
-          twitt.href = twitt.href.replace(/text=.*/gi, 'text=' + content)
-          console.log(twitt.href);
+
+					console.log(twitt.href);
+					console.log(content);
+					content = encode(resultContent.innerHTML + '#quotesondesign');
+					console.log(content)
+					twitt.href = twitt.href.replace(/text=.*/gi, 'text=' + content)
+					console.log(twitt.href);
 				}
 			}
 			xmlhttp.open("GET", "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", true);
@@ -74,7 +80,7 @@
 
 
 		function encode(string) {
-		  return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
+			return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
 		}
 	</script>
 </head>
@@ -82,12 +88,10 @@
 	<div id="wrapper">
 		<div id="resultContent"></div>
 		<div id="resultAuthor"></div>
-		<span style="display: inline;">
-	 		<a><i class="fa fa-twitter-square" style="font-size:24px"></i></a>
-	  		<button id="btn">New Quote</button>
-		</span>
-		<a id="twitt" target="_blank" class="twitter-share-button fa fa-twitter-square" style="font-size:24px" href="https://twitter.com/intent/tweet?text=Hello%20world"></a>
-	</div>
+		<div id="quoteButtons">
+			<a id="twitt" target="_blank" class="twitter-share-button fa fa-twitter-square" style="font-size:24px" href="https://twitter.com/intent/tweet?text=Hello%20world"></a>
+			<button id="btn">New Quote</button>
+		</div>
 	</div>
 </body>
 </html>
