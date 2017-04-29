@@ -58,30 +58,32 @@
 
 		
 		function generateQuote(){
-			return new Promise(function(resolve, reject){
-				var xmlhttp = new XMLHttpRequest();
-				xmlhttp.onreadystatechange = function () {
-					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						resolve(xmlhttp.response);
-						//var jsonObject = JSON.parse(xmlhttp.response);
-						/*resultAuthor.innerHTML = jsonObject[0].title;
-						var content = jsonObject[0].content.replace(/<\/?p>/gi, '')
-						resultContent.innerHTML = content;
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function () {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					var jsonObject = JSON.parse(xmlhttp.response);
+					resultAuthor.innerHTML = jsonObject[0].title;
+					if(resultContent.classList.contains('animate-flicker')){
+						resultContent.classList.remove('animate-flicker');
+						setTimeout(function(){
+							resultContent.classList.add('animate-flicker');
+						},0);
+					} else {resultContent.classList.add('animate-flicker');}
 
-						console.log(twitt.href);
-						console.log(content);
-						content = encode(resultContent.innerHTML + '#quotesondesign');
-						console.log(content)*/
-						//twitt.href = twitt.href.replace(/text=.*/gi, 'text=' + content);
-						//console.log(twitt.href);
-					}
+					var content = jsonObject[0].content.replace(/<\/?p>/gi, '');
+					//console.log(content);
+					setTimeout(()=> {resultContent.innerHTML = content;}, 1500);
+
+					//console.log(content);
+					var twittContent = encode(content + '#quotesondesign');
+					
+					//console.log(twittContent)
+					twitt.href = twitt.href.replace(/text=.*/gi, 'text=' + twittContent)
 				}
-				xmlhttp.open("GET", "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", true);
-				xmlhttp.send();
-			})
+			}
+			xmlhttp.open("GET", "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", true);
+			xmlhttp.send();
 		}
-
-
 
 		function encode(string) {
 			return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
