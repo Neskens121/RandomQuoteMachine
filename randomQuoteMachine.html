@@ -6,7 +6,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="mystyles.css" />
 	<script>
+		var prettyColors = ['#8a32cd', '#b6ed12', '#15e8ef', '#40b7bf', '#2272ce', '#80e31c','#b1a24e','#8f707e', '#e79118', '#699596', '#808080']
 		var resultContent = document.getElementById("resultContent");
+		var text = document.getElementById("text");
 		var resultAuthor = document.getElementById("resultAuthor");
 		var btn = document.getElementById("new-quote");
 		var tweet = document.getElementById("tweet");
@@ -24,19 +26,22 @@
 					
 					if(resultContent.classList.contains('animate-flicker')){
 						resultContent.classList.remove('animate-flicker');
+						resultAuthor.classList.remove('animate-flicker');	
 						setTimeout(function(){
 							resultContent.classList.add('animate-flicker');
+							resultAuthor.classList.add('animate-flicker');
 						},0);
 					} else {
 						resultContent.classList.add('animate-flicker');
+						resultAuthor.classList.add('animate-flicker');
 					}
 
 					var content = jsonObject[0].content.replace(/<\/?p>/gi, '');
 					//console.log(content);
 					setTimeout(function(){
-						resultContent.innerHTML = content;
+						text.innerHTML = content;
 						resultAuthor.innerHTML = jsonObject[0].title;
-					}, 1500);
+					}, 1000);
 					
 					//console.log(content);
 					var twittContent = encode(content + '#quotesondesign');
@@ -51,18 +56,20 @@
 
 		function encode(string) {
 			return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
-		}	</script>
-	</head>
-	<body>
-		<div id="wrapper">
-			<div id="resultContent"></div>
-			<div id="resultAuthor"></div>
-			<div class="buttons">
-				<a class="button" id="twitt" title="Tweet this quote!" target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
-					<i class="fa fa-twitter"></i>
-				</a>
-				<button class="button" id="new-quote">New quote</button>
-			</div>
+		}
+
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="resultContent"></div>
+		<div id="resultAuthor"></div>
+		<div class="buttons">
+			<a class="button" id="twitt" title="Tweet this quote!" target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
+				<i class="fa fa-twitter"></i>
+			</a>
+			<button class="button" id="new-quote">New quote</button>
 		</div>
-	</body>
-	</html>
+	</div>
+</body>
+</html>
