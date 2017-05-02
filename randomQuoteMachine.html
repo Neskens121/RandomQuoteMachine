@@ -6,12 +6,16 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="mystyles.css" />
 	<script>
-		var prettyColors = ['#8a32cd', '#b6ed12', '#15e8ef', '#40b7bf', '#2272ce', '#80e31c','#b1a24e','#8f707e', '#e79118', '#699596', '#808080']
+
 		var resultContent = document.getElementById("resultContent");
 		var text = document.getElementById("text");
 		var resultAuthor = document.getElementById("resultAuthor");
 		var btn = document.getElementById("new-quote");
 		var tweet = document.getElementById("tweet");
+
+		var prettyColors = ['#8a32cd', '#b6ed12', '#15e8ef', '#40b7bf', '#2272ce', '#80e31c','#b1a24e','#8f707e', '#e79118', '#699596', '#808080'];
+		var currentIndex = 0;
+
 
 		window.addEventListener('load', generateQuote);
 		btn.addEventListener('click', generateQuote);
@@ -21,6 +25,7 @@
 			var cb = Math.round(new Date().getTime() / 1000);
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function () {
+
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 					var jsonObject = JSON.parse(xmlhttp.response);
 					
@@ -42,7 +47,7 @@
 						text.innerHTML = content;
 						resultAuthor.innerHTML = jsonObject[0].title;
 					}, 1000);
-					
+					changeColor();	
 					//console.log(content);
 					var twittContent = encode(content + '#quotesondesign');
 					
@@ -58,18 +63,33 @@
 			return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");	
 		}
 
+
+		function changeColor(){
+			currentIndex = chooseRandomNumber(0, prettyColors.length-1, currentIndex);
+			document.documentElement.style.setProperty('--main-bg-color', prettyColors[currentIndex]);
+		}
+
+
+		function chooseRandomNumber(min, max, currentValue){
+			if((Math.floor(Math.random() * (max - min + 1)) + min) !== currentValue){return Math.floor(Math.random() * (max - min + 1)) + min}
+				else {return chooseRandomNumber(min, max, currentValue);}
+		}
 	</script>
 </head>
 <body>
 	<div id="wrapper">
-		<div id="resultContent"></div>
+		<div id="resultContent">
+			<i class="fa fa-quote-left"> </i><span id="text"></span>
+		</div>
 		<div id="resultAuthor"></div>
 		<div class="buttons">
-			<a class="button" id="twitt" title="Tweet this quote!" target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
+			<a class="button" id="tweet" title="Tweet this quote!" target="_blank" href="https://twitter.com/intent/tweet?text=Hello%20world">
 				<i class="fa fa-twitter"></i>
 			</a>
 			<button class="button" id="new-quote">New quote</button>
 		</div>
 	</div>
+
+	<div class="footer"> by <a href="https://http://codepen.io/Neskens121/">nenad</a></div>
 </body>
 </html>
